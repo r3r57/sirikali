@@ -4,7 +4,7 @@ set_property( GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS ON )
 
 project( sirikali )
 
-set( PGR_VERSION "1.3.8" )
+set( PGR_VERSION "1.3.8-patched" )
 
 add_definitions( -Wextra -Wall -pedantic )
 
@@ -354,7 +354,7 @@ else()
 
 		#add_executable( sirikali WIN32 ${MOC} ${UI} ${SRC} ${TRAY_RC_SRCS} src/win_icon.rc )
 	else()
-                add_executable( sirikali ${MOC} ${UI} ${SRC} ${TRAY_RC_SRCS} )
+                add_executable( sirikali-patched ${MOC} ${UI} ${SRC} ${TRAY_RC_SRCS} )
 	endif()
 endif()
 
@@ -365,7 +365,7 @@ if( WIN32 )
     TARGET_LINK_LIBRARIES( sirikali ${Qt5Widgets_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Network_LIBRARIES} ${library_pwquality} lxqt-wallet mhogomchungu_task mhogomchungu_network)
 
 else()
-    TARGET_LINK_LIBRARIES( sirikali ${Qt5Widgets_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Network_LIBRARIES} ${library_pwquality} ${GCRYPT_LIBRARY} lxqt-wallet mhogomchungu_task mhogomchungu_network -L${GCRYPT_LIBRARY_PATH})
+    TARGET_LINK_LIBRARIES( sirikali-patched ${Qt5Widgets_LIBRARIES} ${Qt5Core_LIBRARIES} ${Qt5Widgets_LIBRARIES} ${Qt5Network_LIBRARIES} ${library_pwquality} ${GCRYPT_LIBRARY} lxqt-wallet mhogomchungu_task mhogomchungu_network -L${GCRYPT_LIBRARY_PATH})
 endif()
 
 message( STATUS "---------------------------------------------------------------------------" )
@@ -375,7 +375,7 @@ message( STATUS "---------------------------------------------------------------
 if( WIN32 )
     set_target_properties( sirikali PROPERTIES COMPILE_FLAGS "-Wextra -Wall -s -pedantic" )
 else()
-    set_target_properties( sirikali PROPERTIES COMPILE_FLAGS "-Wextra -Wall -s -fPIC -pedantic" )
+    set_target_properties( sirikali-patched PROPERTIES COMPILE_FLAGS "-Wextra -Wall -s -fPIC -pedantic" )
 endif()
 
 file( WRITE ${PROJECT_BINARY_DIR}/siriPolkit.h "\n#define siriPolkitPath \"${CMAKE_INSTALL_PREFIX}/bin/sirikali.pkexec\"" )
@@ -417,7 +417,7 @@ file( COPY changelog DESTINATION "sirikali.app/Contents/Resources/" )
 
 else()
 
-install( TARGETS sirikali RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
+install( TARGETS sirikali-patched RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} )
 
 install( FILES icons/256x256/sirikali.png DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps/ )
 install( FILES icons/48x48/sirikali.png DESTINATION   ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps/ )
@@ -441,17 +441,17 @@ if( NOT APPLE )
 #install( FILES sirikali.png DESTINATION share/icons/hicolor/32x32/apps )
 
 # desktop file section
-file( WRITE ${PROJECT_BINARY_DIR}/io.github.mhogomchungu.sirikali.desktop
+file( WRITE ${PROJECT_BINARY_DIR}/io.github.mhogomchungu.sirikali-patched.desktop
 
 "[Desktop Entry]
 Comment[en_US]=Manage Encrypted Volumes Hosted In Folders
 Comment=Manage Encrypted Volumes Hosted In Folders
-Exec=${CMAKE_INSTALL_FULL_BINDIR}/sirikali -d %U
+Exec=${CMAKE_INSTALL_FULL_BINDIR}/sirikali-patched -d %U
 GenericName[en_US]=Encrypted Folder Manager
 GenericName=Encrypted Folder Manager
 Icon=sirikali
-Name[en_US]=SiriKali
-Name=SiriKali
+Name[en_US]=SiriKali (patched)
+Name=SiriKali (patched)
 NoDisplay=false
 StartupNotify=true
 Terminal=false
