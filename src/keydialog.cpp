@@ -799,15 +799,8 @@ void keyDialog::pbOpen()
 			m_ui->lineEditMountPoint->setFocus() ;
 
 			return ;
-		}
-
-		if( m_ui->lineEditKey->text().isEmpty() ){
-
-			this->showErrorMessage( tr( "Key Field Is Empty." ) ) ;
-
-			m_ui->lineEditKey->setFocus() ;
-
-			return ;
+		}else{
+			m_path = m_ui->lineEditFolderPath->text() ;
 		}
 	}
 
