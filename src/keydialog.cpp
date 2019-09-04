@@ -923,11 +923,15 @@ void keyDialog::pbOpen()
 
 			if( w.key.isEmpty() ){
 
-				m_walletType = wallet ;
+				/* If no key exists for the current volume, ask if the user wants to create a new entry */
+				QString message = QString("The Volume Does Not Appear To Have An Entry In The Wallet.\nDo You Want To Create A New One?") ;
+				QMessageBox::StandardButton reply = QMessageBox::question(this, "No Entry Found", message, QMessageBox::Yes|QMessageBox::No) ;
+				if (reply == QMessageBox::Yes) {
+					walletconfig::instance( this,m_secrets.walletBk( bkwallet ),[ this ](){ this->enableAll(); this->show(); },m_path ) ;
+				} else {
+					this->enableAll() ;
+				}
 
-				auto s = tr( "Volume Not Found in \"%1\".\n\nSet The Volume Key To Add It To The Wallet Before Mounting." ).arg( wallet ) ;
-
-				this->setKeyInWallet( wallet,s ) ;
 			}else{
 				m_key = w.key.toLatin1() ;
 				this->openVolume() ;
@@ -1654,24 +1658,6 @@ void keyDialog::cbActicated( QString e )
 			} ) ;
 		}
 
-	}else if( m_create && utility::equalsAtleastOne( e,
-							 _t( _kwallet() ),
-							 _t( _gnomeWallet() ),
-							 _t( _internalWallet() ),
-							 _t( _OSXKeyChain() ) ) ){
-
-		if( m_ui->lineEditMountPoint->text().isEmpty() ){
-
-			this->showErrorMessage( tr( "Volume Name Field Is Empty." ) ) ;
-			m_ui->cbKeyType->setCurrentIndex( 0 ) ;
-			m_ui->lineEditMountPoint->setFocus() ;
-			m_ui->checkBoxVisibleKey->setVisible( false ) ;
-			return ;
-		}
-
-		auto s = tr( "Create A Volume With Specified Key And Then Add The Key In \n\"%1\"." ).arg( e ) ;
-
-		this->setKeyInWallet( e,s ) ;
 	}else{
 		this->plugIn() ;
 
